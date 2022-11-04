@@ -45,3 +45,73 @@ def sum(x):
 assert sum(5) == 15
 assert sum(4) == 10
 
+def reverse(string): 
+    """
+        Reverses a string 
+        arg string: string to reverse
+        returns: reversed string
+    """
+
+    # Base case
+    # No more chars in string 
+    if len(string) == 0:
+        return ""
+
+    # Recursive case
+    # returning the last char of the string and calling the function again with the string minus the last char.
+    return string[-1] + reverse(string[:-1:])
+
+
+assert reverse("hello") == "olleh"
+assert reverse("") == ""
+
+def multiply(num, multiplier):
+    """
+        multiplies num multiplier amount of times and returns the result.
+        arg num: number to multiply
+        arg multiplier: how many times to multiply num.
+        returns: result of the multiplication
+    """
+
+    # base case:
+    # no more multiplications have to be done (multiplier == 0)
+    # number to multiply is 0 0 * anything = 0
+    if multiplier == 0 or num == 0:
+        return 0;
+
+    # recursive case:
+    # we return the num (so it gets added to the total at the end)
+    # and we add the next multiplication to it, we decrement the multiplier.
+    return num + multiply(num, multiplier - 1)
+
+    # so 3 * 4 = 3 + multiply(3, 3) -> (one multi finished) -> 3 + multiply(3, 2) -> 3 + multiply(3, 1) -> 3 + multiply(3, 0) -> base case ret 0.
+
+assert multiply(4, 4) == 16
+assert multiply(3, 4) == 12
+
+def getIndexOf(item, listToCheck):
+    """
+        Returns the index of the first occurence of item in list, 
+        if not found returns the length of list. (NOT ALLOWED TO USE INDEX FUNC ofc)
+
+        arg item: item to find index of in list
+        arg listToCheck: list try to find item in.
+        returns: index of num or length of 
+    """
+
+    # Base case:
+    # list is empty
+    if len(listToCheck) == 0:
+        return 0
+
+    # recursive case:
+    # If we found the item we do not add 1 to the  count since that would mean we get the position not the index.
+    # remember the count is basically the length since we do +1 for each char,
+    if listToCheck[0] == item:
+        return 0
+    else:
+        return 1 + getIndexOf(item, listToCheck[1::])
+     
+assert getIndexOf(42, [55, 77, 42, 12, 42, 100]) == 2
+assert getIndexOf(1, [3, 2, 5]) == 3
+assert getIndexOf(22, [0, 0, 1, 2, 3, 22]) == 5

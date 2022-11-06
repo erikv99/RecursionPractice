@@ -115,3 +115,84 @@ def getIndexOf(item, listToCheck):
 assert getIndexOf(42, [55, 77, 42, 12, 42, 100]) == 2
 assert getIndexOf(1, [3, 2, 5]) == 3
 assert getIndexOf(22, [0, 0, 1, 2, 3, 22]) == 5
+assert getIndexOf(42, [55, 77, 42, 12, 42, 100]) == 2
+assert getIndexOf(42, list(range(0, 100))) == 42
+
+def isSubstringOf(subString, string):
+    """"""
+
+    # Base case
+
+    # If len subString == 0 it means we checked every char of the substring and we found all of them in order so returning true.
+    if len(subString) == 0:
+        return True
+
+    # If we still need to find a part of the substring but checked all of the string we can return false.
+    if len(string) == 0 and len(subString) != 0:
+        return False
+
+    # Recursive case:
+    
+    # If cur char of substring is current char of string.
+    if subString[0] == string[0]:
+
+        # Use it
+        return isSubstringOf(subString[1::], string[1::])
+
+    # If cur char of substring is not current char of string 
+    else:
+
+        # Lose it, we continue with the rest of string to check for the substring
+        return isSubstringOf(subString, string[1::])
+
+assert isSubstringOf("to", "toto") == True 
+assert isSubstringOf("send", "sendhelp") == True 
+assert isSubstringOf("ri", "erik") == True 
+
+def getMaxUsableSpace(availableSpace, books):
+    """
+        Given a int availableSpace and a list of booksizes we determine
+        how much of the space we can max utilize.
+        The goal is to use as much of the available size, not place as many books.
+
+        arg int availableSpace: space available on the bookshelf.
+        arg int[] books: list of book sizes.
+        returns: max usable space.
+    """
+
+    # We want to use the use it or lose it principle. 
+    # So this means that for each book size we will check if we can place it. 
+    # If not we forget it (lose it). 
+
+    # We want to go from big to small for the book sizes.
+    books = sorted(books, reverse=True)
+
+    # Base case:
+
+    # Is there available space? 
+    if availableSpace <= 0:
+        return 0
+
+    # Are there books, if not we can utilize 0 of the space.
+    if len(books) == 0:
+        return 0
+
+    # Recursive case:
+
+    # Can we use the current book?
+    if availableSpace >= books[0]:
+
+        spaceUtilized = books[0]
+        newAvailableSpace = availableSpace - spaceUtilized
+
+        # Use the book (use it)
+        return spaceUtilized + getMaxUsableSpace(newAvailableSpace, books[1::])
+    
+    # If we cant use the current book we lose it.
+    else:
+
+        return 0 + getMaxUsableSpace(availableSpace, books[1::])
+
+assert getMaxUsableSpace(25, [25]) == 25
+assert getMaxUsableSpace(25, [1, 20, 2]) == 23
+assert getMaxUsableSpace(25, [6, 1, 1, 2, 2]) == 12
